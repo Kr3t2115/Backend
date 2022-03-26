@@ -1,0 +1,55 @@
+1.Wchodzisz do phpmyadmina wpisując localhost/phpmyadmin, utwórz bazę danych o nazwie przychodnia.
+Następnie przejdź do zakładki 'SQL' i robisz kopiuj wklej tego co jest poniżej
+
+CREATE TABLE `lekarze` (
+  `id_lekarza` int(11) AUTO_INCREMENT PRIMARY KEY,
+  `imie_lekarza` varchar(12) NOT NULL,
+  `naz_lekarza` varchar(60) NOT NULL,
+  `spec_lekarza` text NOT NULL,
+  `telefon_lekarza` varchar(11) NOT NULL
+)
+
+INSERT INTO `lekarze` (`id_lekarza`, `imie_lekarza`, `naz_lekarza`, `spec_lekarza`, `telefon_lekarza`) VALUES
+(1, 'Bartosz', 'Malinowski', 'Ginekolog', '854-213-512'),
+(2, 'Kazimierz', 'Wójcik', 'Urolog', '123-123-133'),
+(3, 'Przemysław', 'Jakubowski', 'Alergolog', '123-123-123'),
+(4, 'Henryk', 'Jakubowski', 'Chirurg', '135-664-654'),
+(5, 'Aleks', 'Andrzejewski', 'Ortodonta', '123-756-234');
+
+CREATE TABLE `leki` (
+  `id_leków` int(11) AUTO_INCREMENT PRIMARY KEY,
+  `nazwa_leku` text NOT NULL,
+  `refuncacja` double(2,2) NOT NULL
+)
+
+INSERT INTO `leki` (`id_leków`, `nazwa_leku`, `refuncacja`) VALUES
+(1, 'Morfina', 0.50),
+(2, 'Apap', 0.90),
+(3, 'Gripex', 0.99);
+
+CREATE TABLE `pacjenci` (
+  `id_pacjenta` int(11) AUTO_INCREMENT PRIMARY KEY,
+  `imie_pacjenta` varchar(12) NOT NULL,
+  `nazw_pacjenta` varchar(60) NOT NULL,
+  `pesel` varchar(11) NOT NULL
+)
+
+INSERT INTO `pacjenci` (`id_pacjenta`, `imie_pacjenta`, `nazw_pacjenta`, `pesel`) VALUES
+(1, 'Adam', 'Niskorosły', '9808905134'),
+(3, 'Adrian', 'Miałczyński', '9808905234'),
+(4, 'Bartosz', 'Dąbrowski', '98009051345'),
+(5, 'Igor', 'Krawczyk', '70201345679');
+
+CREATE TABLE `recepta` (
+  `id` int(11) AUTO_INCREMENT PRIMARY KEY,
+  `id_lekarza` int(11) NOT NULL,
+  `id_pacjenta` int(11) NOT NULL,
+  `id_leku` int(11) NOT NULL,
+  `data` datetime NOT NULL DEFAULT current_timestamp()
+)
+
+ALTER TABLE `recepta` ADD CONSTRAINT `lekarze` FOREIGN KEY (`id_lekarza`) REFERENCES `lekarze`(`id_lekarza`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `recepta` ADD CONSTRAINT `leki` FOREIGN KEY (`id_leku`) REFERENCES `leki`(`id_leków`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `recepta` ADD CONSTRAINT `pacjent` FOREIGN KEY (`id_pacjenta`) REFERENCES `pacjenci`(`id_pacjenta`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE VIEW rec AS SELECT recepta.data, lekarze.naz_lekarza, pacjenci.pesel,leki.nazwa_leku FROM recepta JOIN lekarze ON recepta.id_lekarza = lekarze.id_lekarza JOIN pacjenci ON recepta.id_pacjenta = pacjenci.id_pacjenta JOIN leki ON recepta.id_leku = leki.id_leków;
+
+CREATE VIEW rec_v2 AS SELECT lekarze.imie_lekarza, lekarze.naz_lekarza, pacjenci.imie_pacjenta , pacjenci.nazw_pacjenta ,pacjenci.pesel,leki.nazwa_leku,recepta.data FROM recepta JOIN lekarze ON recepta.id_lekarza = lekarze.id_lekarza JOIN pacjenci ON recepta.id_pacjenta = pacjenci.id_pacjenta JOIN leki ON recepta.id_leku = leki.id_leków;
