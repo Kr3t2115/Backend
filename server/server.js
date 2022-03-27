@@ -4,6 +4,7 @@ const lekarze = require('./routes/routesLekarze')
 const pacjenci = require('./routes/routesPacjenci')
 const leki = require('./routes/routesLeki')
 const recepta = require('./routes/routesRecepta')
+const add = require('./routes/routesAdd')
 const port = 3000
 const app = express()
 
@@ -30,9 +31,11 @@ app.use('/api/leki',  leki)
 
 app.use('/api/recepta',  recepta)
 
-app.get('/', (req,res) => {
-    res.send('Hello')
-})
+app.use('/api/post',  add)
+
+app.get('/', function (req, res) {  
+    res.sendFile( __dirname + "/"+"index.html" );  
+ })  
 
 app.listen(port, () => {
     console.log(`Server dziala na porcie: ${port}`)
