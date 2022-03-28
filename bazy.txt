@@ -17,12 +17,12 @@ INSERT INTO `lekarze` (`id_lekarza`, `imie_lekarza`, `naz_lekarza`, `spec_lekarz
 (5, 'Aleks', 'Andrzejewski', 'Ortodonta', '123-756-234');
 
 CREATE TABLE `leki` (
-  `id_leków` int(11) AUTO_INCREMENT PRIMARY KEY,
+  `id_lekow` int(11) AUTO_INCREMENT PRIMARY KEY,
   `nazwa_leku` text NOT NULL,
   `refuncacja` double(2,2) NOT NULL
 )
 
-INSERT INTO `leki` (`id_leków`, `nazwa_leku`, `refuncacja`) VALUES
+INSERT INTO `leki` (`id_lekow`, `nazwa_leku`, `refuncacja`) VALUES
 (1, 'Morfina', 0.50),
 (2, 'Apap', 0.90),
 (3, 'Gripex', 0.99);
@@ -48,8 +48,8 @@ CREATE TABLE `recepta` (
   `data` datetime NOT NULL DEFAULT current_timestamp()
 )
 
-ALTER TABLE `recepta` ADD CONSTRAINT `lekarze` FOREIGN KEY (`id_lekarza`) REFERENCES `lekarze`(`id_lekarza`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `recepta` ADD CONSTRAINT `leki` FOREIGN KEY (`id_leku`) REFERENCES `leki`(`id_leków`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `recepta` ADD CONSTRAINT `pacjent` FOREIGN KEY (`id_pacjenta`) REFERENCES `pacjenci`(`id_pacjenta`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `recepta` ADD CONSTRAINT `lekarze` FOREIGN KEY (`id_lekarza`) REFERENCES `lekarze`(`id_lekarza`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `recepta` ADD CONSTRAINT `leki` FOREIGN KEY (`id_leku`) REFERENCES `leki`(`id_lekow`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `recepta` ADD CONSTRAINT `pacjent` FOREIGN KEY (`id_pacjenta`) REFERENCES `pacjenci`(`id_pacjenta`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 CREATE VIEW rec AS SELECT recepta.data, lekarze.naz_lekarza, pacjenci.pesel,leki.nazwa_leku FROM recepta JOIN lekarze ON recepta.id_lekarza = lekarze.id_lekarza JOIN pacjenci ON recepta.id_pacjenta = pacjenci.id_pacjenta JOIN leki ON recepta.id_leku = leki.id_leków;
 
-CREATE VIEW rec_v2 AS SELECT lekarze.imie_lekarza, lekarze.naz_lekarza, pacjenci.imie_pacjenta , pacjenci.nazw_pacjenta ,pacjenci.pesel,leki.nazwa_leku,recepta.data FROM recepta JOIN lekarze ON recepta.id_lekarza = lekarze.id_lekarza JOIN pacjenci ON recepta.id_pacjenta = pacjenci.id_pacjenta JOIN leki ON recepta.id_leku = leki.id_leków;
+CREATE VIEW rec_v2 AS SELECT lekarze.imie_lekarza, lekarze.naz_lekarza, pacjenci.imie_pacjenta , pacjenci.nazw_pacjenta ,pacjenci.pesel,leki.nazwa_leku,recepta.data FROM recepta JOIN lekarze ON recepta.id_lekarza = lekarze.id_lekarza JOIN pacjenci ON recepta.id_pacjenta = pacjenci.id_pacjenta JOIN leki ON recepta.id_leku = leki.id_lekow;
