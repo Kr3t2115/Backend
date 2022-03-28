@@ -4,7 +4,8 @@ const lekarze = require('./routes/routesLekarze')
 const pacjenci = require('./routes/routesPacjenci')
 const leki = require('./routes/routesLeki')
 const recepta = require('./routes/routesRecepta')
-const add = require('./routes/routesAdd')
+const addPacjent = require('./routes/routesAdd')
+const addRecepta = require('./routes/routesAddRecepta')
 const port = 3000
 const app = express()
 
@@ -31,7 +32,9 @@ app.use('/api/leki',  leki)
 
 app.use('/api/recepta',  recepta)
 
-app.use('/api/post',  add)
+app.use('/api/post',  addPacjent)
+
+app.use('/api/postRec',addRecepta)
 
 app.get('/', function (req, res) {  
     res.sendFile( __dirname + "/"+"index.html" );  
