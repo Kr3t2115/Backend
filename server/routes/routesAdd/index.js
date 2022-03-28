@@ -18,16 +18,15 @@ routerRecepta.post('/', urlencodedParser, function (req, res) {
     response = {  
         imie:req.body.imie,  
         nazwisko:req.body.nazwisko,
-        wiek:req.body.wiek  
- 
+        pesel:req.body.pesel,
     };  
     console.log(response);  
     res.end(JSON.stringify(response));  
-    // res.redirect('/')
  
-    //  sql = 'INSERT INTO recepta(id, imie, nazwisko, wiek) VALUES(NULL, ?, ?,? )'
-    //  connection.query(sql , [response.imie, response.nazwisko, response.wiek], (err, rows, fields) => {
-    //  })
+     sql = 'INSERT INTO pacjenci(id_pacjenta, imie_pacjenta, nazw_pacjenta, pesel) VALUES(NULL, ?, ?, ? )'
+     pool.query(sql , [response.imie, response.nazwisko, response.pesel], (err, rows, fields) => {
+     })
+     console.log(sql)
  })  
 
 module.exports = routerRecepta;
